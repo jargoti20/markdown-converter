@@ -96,35 +96,32 @@ export default function NotionMarkdownConverter() {
   return (
     <>
       <NotionStyles />
-      <div className="h-[calc(100vh)] bg-gray-100 p-4">
-        <div className="sticky top-0 w-full bg-white-500 dark:bg-neutral-900 flex justify-center z-50">
+      <div className="h-screen flex flex-col bg-gray-100">
+        <div className="w-full bg-white dark:bg-neutral-900 flex justify-center py-4 border-b">
           <ToggleSwitch isMarkdownMode={isMarkdownMode} onToggle={toggleMode} />
         </div>
-        <div className="w-full mx-auto px-4">
-
-          <div className="mb-4 h-full flex justify-center">
-
-          </div>
-          <div className="bg-white rounded-lg shadow-lg h-full overflow-hidden grid grid-cols-2 gap-4">
-            <div className="p-4 bg-gray-50 overflow-hidden">
+        
+        <div className="flex-1 overflow-hidden p-4">
+          <div className="h-full bg-white rounded-lg shadow-lg overflow-hidden grid grid-cols-2 gap-4">
+            <div className="p-4 bg-gray-50 overflow-y-auto">
               {isMarkdownMode ? (
                 <Textarea
                   value={markdown}
                   onChange={(e) => setMarkdown(e.target.value)}
-                  className="w-full h-full resize-none border-none focus:ring-0 bg-transparent overflow-auto"
+                  className="w-full h-full resize-none border-none focus:ring-0 bg-transparent"
                   placeholder="Type your markdown here..."
                 />
               ) : (
                 <Textarea
                   value={html}
                   onChange={(e) => setHtml(e.target.value)}
-                  className="w-full h-full resize-none border-none focus:ring-0 bg-transparent overflow-auto font-mono"
+                  className="w-full h-full resize-none border-none focus:ring-0 bg-transparent font-mono"
                   placeholder="Type your HTML here..."
                 />
               )}
             </div>
-            <div className="p-4 overflow-auto h-full prose max-w-none relative">
-              <div ref={proseRef} className="prose max-w-none h-full pb-16">
+            <div className="p-4 overflow-y-auto relative">
+              <div ref={proseRef} className="prose max-w-none pb-16">
                 {isMarkdownMode ? (
                   <ReactMarkdown
                     components={{
