@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useCallback, useRef } from "react"
+import React, { useState, useCallback, useRef, useEffect } from "react"
 import ReactMarkdown from "react-markdown"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { Textarea } from "@/components/ui/textarea"
@@ -25,8 +25,22 @@ export default function NotionMarkdownConverter() {
   )
   const [html, setHtml] = useState("<h1>Welcome to Notion-like Converter</h1>\n\n<p>Start typing your HTML here...</p>")
   const [outputCode, setOutputCode] = useState("")
+  const [previewMarkdown, setPreviewMarkdown] = useState("")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const proseRef = useRef<HTMLDivElement>(null)
+
+  // Update preview markdown whenever HTML changes
+  useEffect(() => {
+    if (!isMarkdownMode) {
+      try {
+        const converted = convertHtmlToMarkdown(html)
+        setPreviewMarkdown(converted)
+      } catch (error) {
+        console.error('Error converting HTML to Markdown:', error)
+        setPreviewMarkdown('Error converting HTML to Markdown')
+      }
+    }
+  }, [html, isMarkdownMode])
 
   const generateOutput = useCallback(() => {
     if (isMarkdownMode && proseRef.current) {
@@ -53,7 +67,13 @@ export default function NotionMarkdownConverter() {
 
       setOutputCode(proseClone.innerHTML)
     } else {
-      setOutputCode(convertHtmlToMarkdown(html))
+      try {
+        const markdown = convertHtmlToMarkdown(html)
+        setOutputCode(markdown)
+      } catch (error) {
+        console.error('Error converting HTML to Markdown:', error)
+        toast.error('Failed to convert HTML to Markdown. Please check your HTML input.')
+      }
     }
     setIsDialogOpen(true)
   }, [isMarkdownMode, html])
@@ -73,10 +93,6 @@ export default function NotionMarkdownConverter() {
     setIsMarkdownMode((prev) => !prev)
   }
 
-  const generateHtml = () => {
-    generateOutput()
-  }
-
   return (
     <>
       <NotionStyles />
@@ -91,24 +107,37 @@ export default function NotionMarkdownConverter() {
           </div>
           <div className="bg-white rounded-lg shadow-lg h-full overflow-hidden grid grid-cols-2 gap-4">
             <div className="p-4 bg-gray-50 overflow-hidden">
-              <Textarea
-                value={markdown}
-                onChange={(e) => setMarkdown(e.target.value)}
-                className="w-full h-full resize-none border-none focus:ring-0 bg-transparent overflow-auto"
-                placeholder="Type your markdown here..."
-              />
+              {isMarkdownMode ? (
+                <Textarea
+                  value={markdown}
+                  onChange={(e) => setMarkdown(e.target.value)}
+                  className="w-full h-full resize-none border-none focus:ring-0 bg-transparent overflow-auto"
+                  placeholder="Type your markdown here..."
+                />
+              ) : (
+                <Textarea
+                  value={html}
+                  onChange={(e) => setHtml(e.target.value)}
+                  className="w-full h-full resize-none border-none focus:ring-0 bg-transparent overflow-auto font-mono"
+                  placeholder="Type your HTML here..."
+                />
+              )}
             </div>
             <div className="p-4 overflow-auto h-full prose max-w-none relative">
               <div ref={proseRef} className="prose max-w-none h-full pb-16">
                 {isMarkdownMode ? (
                   <ReactMarkdown
                     components={{
-                      code({ node, inline, className, children, ...props }) {
+                      code: ({ className, children, ...props }) => {
                         const match = /language-(\w+)/.exec(className || "")
-                        return !inline && match ? (
-                          <SyntaxHighlighter language={match[1]} PreTag="div" {...props}>
-                            {String(children).replace(/\n$/, "")}
-                          </SyntaxHighlighter>
+                        const inline = !match
+                        return !inline ? (
+                          <SyntaxHighlighter
+                            {...(props as any)}
+                            PreTag="div"
+                            language={match[1]}
+                            children={String(children).replace(/\n$/, "")}
+                          />
                         ) : (
                           <code className={className} {...props}>
                             {children}
@@ -120,11 +149,18 @@ export default function NotionMarkdownConverter() {
                     {markdown}
                   </ReactMarkdown>
                 ) : (
-                  <div dangerouslySetInnerHTML={{ __html: html }} />
+                  <div className="prose max-w-none">
+                    <ReactMarkdown>
+                      {previewMarkdown}
+                    </ReactMarkdown>
+                  </div>
                 )}
               </div>
-              <Button className="absolute top-4 right-4 z-10" onClick={generateHtml}>
-                Show HTML
+              <Button className="absolute top-4 right-4 z-10" onClick={() => {
+                generateOutput()
+                toggleMode()
+              }}>
+                Show {isMarkdownMode ? "HTML" : "Markdown"} and Switch Mode
               </Button>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
@@ -153,4 +189,3 @@ export default function NotionMarkdownConverter() {
     </>
   )
 }
-
