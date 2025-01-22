@@ -146,11 +146,28 @@ export default function NotionMarkdownConverter() {
                     {markdown}
                   </ReactMarkdown>
                 ) : (
-                  <div className="prose max-w-none">
-                    <ReactMarkdown>
-                      {previewMarkdown}
-                    </ReactMarkdown>
-                  </div>
+                  <ReactMarkdown
+                    components={{
+                      code: ({ className, children, ...props }) => {
+                        const match = /language-(\w+)/.exec(className || "")
+                        const inline = !match
+                        return !inline ? (
+                          <SyntaxHighlighter
+                            {...(props as any)}
+                            PreTag="div"
+                            language={match[1]}
+                            children={String(children).replace(/\n$/, "")}
+                          />
+                        ) : (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        )
+                      },
+                    }}
+                  >
+                    {previewMarkdown}
+                  </ReactMarkdown>
                 )}
               </div>
               <Button className="absolute top-4 right-4 z-10" onClick={() => {
