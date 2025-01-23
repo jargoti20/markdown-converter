@@ -10,7 +10,7 @@ export function ThemeSwitcher() {
   const { setTheme } = useTheme()
 
   return (
-    <div className="flex flex-col mt-[5px] items-center justify-center">
+    <div className="flex flex-col h-full items-center justify-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon" className="h-9 w-9">

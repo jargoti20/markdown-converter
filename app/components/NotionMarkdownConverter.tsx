@@ -99,7 +99,9 @@ export default function NotionMarkdownConverter() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold tracking-tight">Markdown / HTML Converter</h1>
         <div className="flex items-center gap-8 mr-16">
-          <ToggleSwitch isMarkdownMode={isMarkdownMode} onToggle={() => setIsMarkdownMode(!isMarkdownMode)} />
+          <div className="h-full items-center flex">
+            <ToggleSwitch isMarkdownMode={isMarkdownMode} onToggle={() => setIsMarkdownMode(!isMarkdownMode)} />
+          </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" onClick={generateOutput} className='w-120 text-center block'>
@@ -135,7 +137,7 @@ export default function NotionMarkdownConverter() {
 
       <div className="grid flex-1 grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <div className="rounded-lg border border-neutral-200 dark:border-neutral-800 bg-background p-4">
+          <div className="rounded-lg border border-neutral-200 dark:border-neutral-800 bg-background p-4 h-[calc(100vh-12rem)]">
             {isMarkdownMode ? (
               <Textarea
                 value={markdown}
@@ -157,7 +159,7 @@ export default function NotionMarkdownConverter() {
         <div className="flex flex-col gap-2">
           <div
             ref={proseRef}
-            className="prose prose-sm dark:prose-invert h-full max-w-none overflow-auto rounded-lg border border-neutral-200 dark:border-neutral-800 bg-background p-4"
+            className="prose prose-sm dark:prose-invert h-[calc(100vh-12.0rem)] max-w-none overflow-auto rounded-lg border border-neutral-200 dark:border-neutral-800 bg-background p-4"
           >
             {isMarkdownMode ? (
               <ReactMarkdown
