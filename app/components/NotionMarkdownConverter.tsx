@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
 import { ToggleSwitch } from "./ToggleSwitch"
-import { NotionStyles } from "../styles/NotionStyles"
-import { convertMarkdownToHtml, convertHtmlToMarkdown } from "../lib/converterLogic"
+import { convertHtmlToMarkdown } from "../lib/converterLogic"
+import { useTheme } from "next-themes"
 
 export default function NotionMarkdownConverter() {
   const [isMarkdownMode, setIsMarkdownMode] = useState(true)
@@ -28,6 +28,7 @@ export default function NotionMarkdownConverter() {
   const [previewMarkdown, setPreviewMarkdown] = useState("")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const proseRef = useRef<HTMLDivElement>(null)
+  const { theme } = useTheme()
 
   // Update preview markdown whenever HTML changes
   useEffect(() => {
@@ -94,112 +95,103 @@ export default function NotionMarkdownConverter() {
   }
 
   return (
-    <>
-      <NotionStyles />
-      <div className="h-screen flex flex-col bg-neutral-100">
-        <div className="w-full bg-white dark:bg-neutral-900 flex justify-center py-4 border-b">
-          <ToggleSwitch isMarkdownMode={isMarkdownMode} onToggle={toggleMode} />
-        </div>
-        
-        <div className="flex-1 overflow-hidden p-4">
-          <div className="h-full bg-white rounded-lg shadow-lg overflow-hidden grid grid-cols-2 gap-4">
-            <div className="p-4 bg-neutral-50 overflow-y-auto">
-              {isMarkdownMode ? (
-                <Textarea
-                  value={markdown}
-                  onChange={(e) => setMarkdown(e.target.value)}
-                  className="w-full h-full resize-none border-none focus:ring-0 bg-transparent"
-                  placeholder="Type your markdown here..."
-                />
-              ) : (
-                <Textarea
-                  value={html}
-                  onChange={(e) => setHtml(e.target.value)}
-                  className="w-full h-full resize-none border-none focus:ring-0 bg-transparent font-mono"
-                  placeholder="Type your HTML here..."
-                />
-              )}
-            </div>
-            <div className="p-4 overflow-y-auto relative">
-              <div ref={proseRef} className="prose max-w-none pb-16">
-                {isMarkdownMode ? (
-                  <ReactMarkdown
-                    components={{
-                      code: ({ className, children, ...props }) => {
-                        const match = /language-(\w+)/.exec(className || "")
-                        const inline = !match
-                        return !inline ? (
-                          <SyntaxHighlighter
-                            {...(props as any)}
-                            PreTag="div"
-                            language={match[1]}
-                            children={String(children).replace(/\n$/, "")}
-                          />
-                        ) : (
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
-                        )
-                      },
-                    }}
-                  >
-                    {markdown}
-                  </ReactMarkdown>
-                ) : (
-                  <ReactMarkdown
-                    components={{
-                      code: ({ className, children, ...props }) => {
-                        const match = /language-(\w+)/.exec(className || "")
-                        const inline = !match
-                        return !inline ? (
-                          <SyntaxHighlighter
-                            {...(props as any)}
-                            PreTag="div"
-                            language={match[1]}
-                            children={String(children).replace(/\n$/, "")}
-                          />
-                        ) : (
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
-                        )
-                      },
-                    }}
-                  >
-                    {previewMarkdown}
-                  </ReactMarkdown>
-                )}
-              </div>
-              <Button className="absolute top-4 right-4 z-10" onClick={() => {
-                generateOutput()
-                toggleMode()
-              }}>
-                Show {isMarkdownMode ? "HTML" : "Markdown"} and Switch Mode
+    <div className="flex h-full flex-col gap-4 p-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Welcome to Markdown Converter</h1>
+        <div className="flex items-center gap-8 mr-16">
+          <ToggleSwitch isMarkdownMode={isMarkdownMode} onToggle={() => setIsMarkdownMode(!isMarkdownMode)} />
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" onClick={generateOutput} className='w-120 text-center block'>
+                Show {isMarkdownMode ? "HTML" : "Markdown"}
               </Button>
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  {/* <Button onClick={generateOutput}>Show {isMarkdownMode ? "HTML" : "Markdown"}</Button> */}
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[625px]">
-                  <DialogHeader>
-                    <DialogTitle>Generated {isMarkdownMode ? "HTML" : "Markdown"}</DialogTitle>
-                    <DialogDescription>
-                      This is the {isMarkdownMode ? "HTML" : "Markdown"} output generated from your input. You can copy
-                      it to your clipboard.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="mt-4">
-                    <Textarea value={outputCode} readOnly className="w-full h-64 resize-none font-mono" />
-                  </div>
-                  <Button onClick={copyOutput} className="mt-4">
-                    Copy {isMarkdownMode ? "HTML" : "Markdown"}
-                  </Button>
-                </DialogContent>
-              </Dialog>
-            </div>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>Generated {isMarkdownMode ? "HTML" : "Markdown"}</DialogTitle>
+                <DialogDescription>
+                  Copy the generated code below:
+                </DialogDescription>
+              </DialogHeader>
+              <div className="relative">
+                <pre className="max-h-[60vh] overflow-x-scroll rounded-lg border bg-muted p-4">
+                  <code>{outputCode}</code>
+                </pre>
+                <Button
+                  className="absolute right-4 top-4"
+                  size="sm"
+                  onClick={() => {
+                    navigator.clipboard.writeText(outputCode)
+                    toast.success("Copied to clipboard!")
+                  }}
+                >
+                  Copy
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </div>
+
+      <div className="grid flex-1 grid-cols-2 gap-4">
+        <div className="flex flex-col gap-2">
+          <div className="rounded-lg border bg-background p-4">
+            {isMarkdownMode ? (
+              <Textarea
+                value={markdown}
+                onChange={(e) => setMarkdown(e.target.value)}
+                className="h-full min-h-[500px] resize-none bg-transparent"
+                placeholder="Enter your Markdown here..."
+              />
+            ) : (
+              <Textarea
+                value={html}
+                onChange={(e) => setHtml(e.target.value)}
+                className="h-full min-h-[500px] resize-none bg-transparent"
+                placeholder="Enter your HTML here..."
+              />
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div
+            ref={proseRef}
+            className="prose prose-sm dark:prose-invert h-full max-w-none overflow-auto rounded-lg border bg-background p-4"
+          >
+            {isMarkdownMode ? (
+              <ReactMarkdown
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "")
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        {...props}
+                        style={undefined}
+                        language={match[1]}
+                        PreTag="div"
+                        className="!my-0 !bg-muted"
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code {...props} className={className}>
+                        {children}
+                      </code>
+                    )
+                  },
+                }}
+              >
+                {markdown}
+              </ReactMarkdown>
+            ) : (
+              <div className="prose prose-sm dark:prose-invert">
+                <ReactMarkdown>{previewMarkdown}</ReactMarkdown>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

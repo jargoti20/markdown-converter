@@ -2,6 +2,8 @@ import "./globals.css"
 import "./monokai.css"
 import { Inter } from "next/font/google"
 import { Toaster } from "sonner"
+import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeSwitcher } from "@/components/theme-switcher"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -16,12 +18,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full" suppressHydrationWarning>
       <body className={`${inter.className} h-full`}>
-        {children}
-        <Toaster richColors position="bottom-right" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="absolute right-4 top-4 flex items-center gap-8">
+            <ThemeSwitcher />
+          </div>
+          {children}
+          <Toaster richColors position="bottom-right" />
+        </ThemeProvider>
       </body>
     </html>
   )
 }
-
