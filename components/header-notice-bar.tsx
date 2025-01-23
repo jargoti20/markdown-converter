@@ -5,9 +5,20 @@ import { Button } from "./ui/button";
 import { X } from 'lucide-react';
 
 export default function HeaderNoticeBar() {
-    const [isVisible, setIsVisible] = useState(true);
+    // Explicitly define the state type as `boolean | null`
+    const [isVisible, setIsVisible] = useState<boolean | null>(null);
 
-    // Effect to handle class updates for #markdown-preview and #markdown-input
+    // Load the visibility state from localStorage on component mount
+    useEffect(() => {
+        const storedVisibility = localStorage.getItem('noticeBarVisible');
+        if (storedVisibility === 'false') {
+            setIsVisible(false); // Hide the notice bar if the user previously closed it
+        } else {
+            setIsVisible(true); // Show the notice bar by default
+        }
+    }, []);
+
+    // Update classes for #markdown-preview and #markdown-input when visibility changes
     useEffect(() => {
         const updateClasses = () => {
             const markdownPreview = document.getElementById('markdown-preview');
@@ -30,9 +41,17 @@ export default function HeaderNoticeBar() {
             }
         };
 
-        // Update classes initially and whenever `isVisible` changes
-        updateClasses();
+        if (isVisible !== null) {
+            // Only update classes if the visibility state is loaded
+            updateClasses();
+
+            // Save the visibility state to localStorage
+            localStorage.setItem('noticeBarVisible', isVisible.toString());
+        }
     }, [isVisible]);
+
+    // Prevent rendering until the visibility state is loaded
+    if (isVisible === null) return null;
 
     if (!isVisible) return null;
 

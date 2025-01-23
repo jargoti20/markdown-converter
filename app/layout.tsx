@@ -11,6 +11,9 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata = {
   title: "Markdown & HTML Converter",
   description: "Convert between Markdown and HTML.",
+  icons: {
+    icon: '/markdown-icon.png',
+  }
 }
 
 export default function RootLayout({
