@@ -1,4 +1,4 @@
-# Project Title
+# Markdown Converter
 
 A markdown converter that allows you to convert markdown to HTML and vice versa. Code is formatted in Monokai style.
 
@@ -68,6 +68,10 @@ If you would like to contribute to this project, please fork the repository and 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Notices
+
+This project is just a prototype meaning the code is not optimized and not ready for production purposes. Use it at your own risk.
 
 ## Acknowledgments
 

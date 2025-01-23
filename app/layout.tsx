@@ -30,7 +30,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="absolute right-4 top-[60px] flex items-center gap-8">
+          <div id="theme-switcher" className="absolute right-4 top-[21px] flex items-center gap-8">
             <ThemeSwitcher />
           </div>
           {children}

@@ -23,20 +23,25 @@ export default function HeaderNoticeBar() {
         const updateClasses = () => {
             const markdownPreview = document.getElementById('markdown-preview');
             const markdownInput = document.getElementById('markdown-input');
+            const themeSwitcher = document.getElementById('theme-switcher');
 
-            if (markdownPreview && markdownInput) {
+            if (markdownPreview && markdownInput && themeSwitcher) {
                 if (isVisible) {
                     // Apply classes for when the notice bar is visible
                     markdownPreview.classList.remove('h-[calc(100vh_-_9.5em)]');
                     markdownPreview.classList.add('h-[calc(100vh_-_12em)]');
                     markdownInput.classList.remove('h-[calc(100vh_-_9.5em)]');
                     markdownInput.classList.add('h-[calc(100vh_-_12em)]');
+                    themeSwitcher.classList.add('top-[60px]');
+                    themeSwitcher.classList.remove('top-[21px]');
                 } else {
                     // Apply classes for when the notice bar is hidden
                     markdownPreview.classList.remove('h-[calc(100vh_-_12em)]');
                     markdownPreview.classList.add('h-[calc(100vh_-_9.5em)]');
                     markdownInput.classList.remove('h-[calc(100vh_-_12em)]');
                     markdownInput.classList.add('h-[calc(100vh_-_9.5em)]');
+                    themeSwitcher.classList.remove('top-[60px]');
+                    themeSwitcher.classList.add('top-[21px]');
                 }
             }
         };
