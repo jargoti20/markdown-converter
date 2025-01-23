@@ -41,7 +41,7 @@ To get started with this project, follow these steps:
 
 ## Usage
 
-Describe how to use your application, including any important commands or features.
+Simply enter markdown in the input field and the corresponding HTML will be displayed. The preview will update in real-time. Click 'Show Markdown' to display the markdown code. You can then click 'Copy HTML' or 'Copy Markdown' to copy the respective code to your clipboard.
 
 ### Components
 
