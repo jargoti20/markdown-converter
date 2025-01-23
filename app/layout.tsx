@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "Markdown & HTML Converter",
-  description: "Convert between Markdown and HTML with a Notion-like interface",
+  description: "Convert between Markdown and HTML.",
 }
 
 export default function RootLayout({

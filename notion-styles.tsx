@@ -56,7 +56,7 @@ export const NotionStyles = createGlobalStyle`
   }
 
   .prose pre {
-    background-color: #f6f8fa;
+@apply bg-muted;
     border-radius: 3px;
     font-size: 85%;
     line-height: 1.45;

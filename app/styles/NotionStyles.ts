@@ -37,7 +37,7 @@ export const NotionStyles = createGlobalStyle`
   .prose a:hover { text-decoration: underline; }
 
   .prose code {
-    background-color: rgba(175, 184, 193, 0.2);
+    background-color: rgba(175, 184, 193, 1);
     border-radius: 6px;
     font-size: 85%;
     margin: 0;
@@ -46,7 +46,7 @@ export const NotionStyles = createGlobalStyle`
   }
 
   .prose pre {
-    background-color: #f6f8fa;
+@apply bg-muted;
     border-radius: 6px;
     font-size: 85%;
     line-height: 1.45;

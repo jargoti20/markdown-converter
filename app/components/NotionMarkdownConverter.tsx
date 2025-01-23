@@ -21,9 +21,9 @@ import { convertMarkdownToHtml, convertHtmlToMarkdown } from "../lib/converterLo
 export default function NotionMarkdownConverter() {
   const [isMarkdownMode, setIsMarkdownMode] = useState(true)
   const [markdown, setMarkdown] = useState(
-    '# Welcome to Notion-like Converter\n\nStart typing your markdown here...\n\n```javascript\nconst greeting = "Hello, World!";\nconsole.log(greeting);\n```',
+    '# Welcome to Markdown Converter\n\nStart typing your markdown here...\n\n```javascript\nconst greeting = "Hello, World!";\nconsole.log(greeting);\n```',
   )
-  const [html, setHtml] = useState("<h1>Welcome to Notion-like Converter</h1>\n\n<p>Start typing your HTML here...</p>")
+  const [html, setHtml] = useState("<h1>Welcome to Markdown Converter</h1>\n\n<p>Start typing your HTML here...</p>")
   const [outputCode, setOutputCode] = useState("")
   const [previewMarkdown, setPreviewMarkdown] = useState("")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -96,14 +96,14 @@ export default function NotionMarkdownConverter() {
   return (
     <>
       <NotionStyles />
-      <div className="h-screen flex flex-col bg-gray-100">
+      <div className="h-screen flex flex-col bg-neutral-100">
         <div className="w-full bg-white dark:bg-neutral-900 flex justify-center py-4 border-b">
           <ToggleSwitch isMarkdownMode={isMarkdownMode} onToggle={toggleMode} />
         </div>
         
         <div className="flex-1 overflow-hidden p-4">
           <div className="h-full bg-white rounded-lg shadow-lg overflow-hidden grid grid-cols-2 gap-4">
-            <div className="p-4 bg-gray-50 overflow-y-auto">
+            <div className="p-4 bg-neutral-50 overflow-y-auto">
               {isMarkdownMode ? (
                 <Textarea
                   value={markdown}
