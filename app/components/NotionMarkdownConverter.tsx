@@ -97,7 +97,7 @@ export default function NotionMarkdownConverter() {
   return (
     <div className="flex h-full flex-col gap-4 p-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Welcome to Markdown Converter</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Markdown / HTML Converter</h1>
         <div className="flex items-center gap-8 mr-16">
           <ToggleSwitch isMarkdownMode={isMarkdownMode} onToggle={() => setIsMarkdownMode(!isMarkdownMode)} />
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -135,7 +135,7 @@ export default function NotionMarkdownConverter() {
 
       <div className="grid flex-1 grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <div className="rounded-lg border bg-background p-4">
+          <div className="rounded-lg border border-neutral-200 dark:border-neutral-800 bg-background p-4">
             {isMarkdownMode ? (
               <Textarea
                 value={markdown}
@@ -157,7 +157,7 @@ export default function NotionMarkdownConverter() {
         <div className="flex flex-col gap-2">
           <div
             ref={proseRef}
-            className="prose prose-sm dark:prose-invert h-full max-w-none overflow-auto rounded-lg border bg-background p-4"
+            className="prose prose-sm dark:prose-invert h-full max-w-none overflow-auto rounded-lg border border-neutral-200 dark:border-neutral-800 bg-background p-4"
           >
             {isMarkdownMode ? (
               <ReactMarkdown

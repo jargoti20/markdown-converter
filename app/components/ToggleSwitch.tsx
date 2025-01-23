@@ -7,13 +7,13 @@ interface ToggleSwitchProps {
 
 export function ToggleSwitch({ isMarkdownMode, onToggle }: ToggleSwitchProps) {
   return (
-    <div className="flex items-center justify-center gap-2 bg-white dark:bg-neutral-900 rounded-full p-1 shadow-md border border-neutral-200">
+    <div className="flex items-center justify-center gap-2 bg-white dark:bg-neutral-900 rounded-full p-1 shadow-md border border-neutral-200 dark:border-neutral-800">
       <button
         onClick={onToggle}
         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
           isMarkdownMode
             ? "bg-blue-500 text-white"
-            : "bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100"
+            : "bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700"
         }`}
       >
       Markdown to HTML
@@ -23,7 +23,7 @@ export function ToggleSwitch({ isMarkdownMode, onToggle }: ToggleSwitchProps) {
         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
           !isMarkdownMode
             ? "bg-blue-500 text-white"
-            : "bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100"
+            : "bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700"
         }`}
       >
         HTML to Markdown
