@@ -137,7 +137,7 @@ export default function NotionMarkdownConverter() {
 
       <div className="grid flex-1 grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          <div className="rounded-lg border border-neutral-200 dark:border-neutral-800 bg-background p-4 h-[calc(100vh-12rem)]">
+          <div id="markdown-input" className="rounded-lg border border-neutral-200 dark:border-neutral-800 bg-background p-4 h-[calc(100vh-12rem)]">
             {isMarkdownMode ? (
               <Textarea
                 value={markdown}
@@ -159,6 +159,7 @@ export default function NotionMarkdownConverter() {
         <div className="flex flex-col gap-2">
           <div
             ref={proseRef}
+            id="markdown-preview"
             className="prose prose-sm dark:prose-invert h-[calc(100vh-12.0rem)] max-w-none overflow-auto rounded-lg border border-neutral-200 dark:border-neutral-800 bg-background p-4"
           >
             {isMarkdownMode ? (
