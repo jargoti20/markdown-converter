@@ -17,6 +17,7 @@ import { toast } from "sonner"
 import { ToggleSwitch } from "./ToggleSwitch"
 import { convertHtmlToMarkdown } from "../lib/converterLogic"
 import { useTheme } from "next-themes"
+import { Copy } from "lucide-react"
 
 export default function NotionMarkdownConverter() {
   const [isMarkdownMode, setIsMarkdownMode] = useState(true)
@@ -108,27 +109,28 @@ export default function NotionMarkdownConverter() {
                 Show {isMarkdownMode ? "HTML" : "Markdown"}
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-3xl">
+            <DialogContent className="max-w-7xl w-full overflow-x-scroll">
               <DialogHeader>
                 <DialogTitle>Generated {isMarkdownMode ? "HTML" : "Markdown"}</DialogTitle>
                 <DialogDescription>
                   Copy the generated code below:
                 </DialogDescription>
-              </DialogHeader>
-              <div className="relative">
-                <pre className="max-h-[60vh] overflow-x-scroll rounded-lg border bg-muted p-4">
-                  <code>{outputCode}</code>
-                </pre>
                 <Button
-                  className="absolute right-4 top-4"
+                  className="absolute right-12 top-4 flex items-center"
                   size="sm"
                   onClick={() => {
                     navigator.clipboard.writeText(outputCode)
                     toast.success("Copied to clipboard!")
                   }}
                 >
-                  Copy
+                  <Copy className="w-4 h-4" />
                 </Button>
+              </DialogHeader>
+              <div className="relative">
+                <pre className="max-h-[60vh] overflow-x-scroll rounded-lg border bg-muted p-4">
+                  <code>{outputCode}</code>
+                </pre>
+
               </div>
             </DialogContent>
           </Dialog>
