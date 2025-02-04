@@ -20,7 +20,7 @@ To get started with this project, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/jargoti/markdown-converter.git
+   git clone https://github.com/jargoti20/markdown-converter.git
    cd markdown-converter
    ```
 
