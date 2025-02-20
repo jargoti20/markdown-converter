@@ -175,7 +175,7 @@ export default function NotionMarkdownConverter() {
                         style={undefined}
                         language={match[1]}
                         PreTag="div"
-                        className="!my-0 !bg-muted"
+                        className="my-0! bg-muted!"
                       >
                         {String(children).replace(/\n$/, "")}
                       </SyntaxHighlighter>

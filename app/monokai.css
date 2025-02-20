@@ -1,8 +1,817 @@
-@config "../tailwind.config.ts";
+@import 'tailwindcss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@utility dark {
+  /* Monokai Pro syntax highlighting - Dark mode */
+  & .token.comment {
+    @apply text-[#727072];
+  }
+  & .token.prolog {
+    @apply text-[#727072];
+  }
+  & .token.doctype {
+    @apply text-[#727072];
+  }
+  & .token.cdata {
+    @apply text-[#727072];
+  }
+
+  & .token.operator {
+    @apply text-[#939293];
+  }
+
+  & .token.punctuation {
+    @apply text-[#939293];
+  }
+
+  & .token.property {
+    @apply text-[#FF6188];
+  }
+
+  & .token.tag {
+    @apply text-[#FF6188];
+  }
+
+  & .token.constant {
+    @apply text-[#FF6188];
+  }
+
+  & .token.symbol {
+    @apply text-[#FF6188];
+  }
+
+  & .token.deleted {
+    @apply text-[#FF6188];
+  }
+
+  & .token.boolean {
+    @apply text-[#AB9DF2];
+  }
+
+  & .token.number {
+    @apply text-[#AB9DF2];
+  }
+
+  & .token.selector {
+    @apply text-[#FFD866];
+  }
+
+  & .token.attr-name {
+    @apply text-[#FFD866];
+  }
+
+  & .token.string {
+    @apply text-[#FFD866];
+  }
+
+  & .token.char {
+    @apply text-[#FFD866];
+  }
+
+  & .token.builtin {
+    @apply text-[#FFD866];
+  }
+
+  & .token.inserted {
+    @apply text-[#FFD866];
+  }
+
+  & .token.entity {
+    @apply text-[#78DCE8];
+  }
+
+  & .token.url {
+    @apply text-[#78DCE8];
+  }
+
+  & .language-css .token.string {
+    @apply text-[#78DCE8];
+  }
+
+  & .style .token.string {
+    @apply text-[#78DCE8];
+  }
+
+  & .token.variable {
+    @apply text-[#78DCE8];
+  }
+
+  & .token.atrule {
+    @apply text-[#A9DC76];
+  }
+
+  & .token.attr-value {
+    @apply text-[#A9DC76];
+  }
+
+  & .token.function {
+    @apply text-[#A9DC76];
+  }
+
+  & .token.class-name {
+    @apply text-[#A9DC76];
+  }
+
+  & .token.keyword {
+    @apply text-[#FF6188];
+  }
+
+  & .token.regex {
+    @apply text-[#FFD866];
+  }
+
+  & .token.important {
+    @apply text-[#FFD866];
+  }
+}
+
+@utility token {
+  /* Monokai Pro syntax highlighting - Dark mode */
+  .dark &.comment {
+    @apply text-[#727072];
+  }
+
+  .dark &.prolog {
+    @apply text-[#727072];
+  }
+
+  .dark &.doctype {
+    @apply text-[#727072];
+  }
+
+  .dark &.cdata {
+    @apply text-[#727072];
+  }
+
+  .dark &.operator {
+    @apply text-[#939293];
+  }
+
+  .dark &.punctuation {
+    @apply text-[#939293];
+  }
+
+  .dark &.property {
+    @apply text-[#FF6188];
+  }
+
+  .dark &.tag {
+    @apply text-[#FF6188];
+  }
+
+  .dark &.constant {
+    @apply text-[#FF6188];
+  }
+
+  .dark &.symbol {
+    @apply text-[#FF6188];
+  }
+
+  .dark &.deleted {
+    @apply text-[#FF6188];
+  }
+
+  .dark &.boolean {
+    @apply text-[#AB9DF2];
+  }
+
+  .dark &.number {
+    @apply text-[#AB9DF2];
+  }
+
+  .dark &.selector {
+    @apply text-[#FFD866];
+  }
+
+  .dark &.attr-name {
+    @apply text-[#FFD866];
+  }
+
+  .dark &.string {
+    @apply text-[#FFD866];
+  }
+
+  .dark &.char {
+    @apply text-[#FFD866];
+  }
+
+  .dark &.builtin {
+    @apply text-[#FFD866];
+  }
+
+  .dark &.inserted {
+    @apply text-[#FFD866];
+  }
+
+  .dark &.entity {
+    @apply text-[#78DCE8];
+  }
+
+  .dark &.url {
+    @apply text-[#78DCE8];
+  }
+
+  .dark .language-css &.string {
+    @apply text-[#78DCE8];
+  }
+
+  .dark .style &.string {
+    @apply text-[#78DCE8];
+  }
+
+  .dark &.variable {
+    @apply text-[#78DCE8];
+  }
+
+  .dark &.atrule {
+    @apply text-[#A9DC76];
+  }
+
+  .dark &.attr-value {
+    @apply text-[#A9DC76];
+  }
+
+  .dark &.function {
+    @apply text-[#A9DC76];
+  }
+
+  .dark &.class-name {
+    @apply text-[#A9DC76];
+  }
+
+  .dark &.keyword {
+    @apply text-[#FF6188];
+  }
+
+  .dark &.regex {
+    @apply text-[#FFD866];
+  }
+
+  .dark &.important {
+    @apply text-[#FFD866];
+  }
+
+  /* Light mode syntax highlighting */
+  &.comment {
+    @apply text-[#666666];
+  }
+  &.prolog {
+    @apply text-[#666666];
+  }
+  &.doctype {
+    @apply text-[#666666];
+  }
+  &.cdata {
+    @apply text-[#666666];
+  }
+
+  &.operator {
+    @apply text-[#666666];
+  }
+
+  &.punctuation {
+    @apply text-[#666666];
+  }
+
+  &.property {
+    @apply text-[#905];
+  }
+
+  &.tag {
+    @apply text-[#905];
+  }
+
+  &.constant {
+    @apply text-[#905];
+  }
+
+  &.symbol {
+    @apply text-[#905];
+  }
+
+  &.deleted {
+    @apply text-[#905];
+  }
+
+  &.boolean {
+    @apply text-[#6040A0];
+  }
+
+  &.number {
+    @apply text-[#6040A0];
+  }
+
+  &.selector {
+    @apply text-[#007000];
+  }
+
+  &.attr-name {
+    @apply text-[#007000];
+  }
+
+  &.string {
+    @apply text-[#007000];
+  }
+
+  &.char {
+    @apply text-[#007000];
+  }
+
+  &.builtin {
+    @apply text-[#007000];
+  }
+
+  &.inserted {
+    @apply text-[#007000];
+  }
+
+  &.entity {
+    @apply text-[#0070A0];
+  }
+
+  &.url {
+    @apply text-[#0070A0];
+  }
+
+  .language-css &.string {
+    @apply text-[#0070A0];
+  }
+
+  .style &.string {
+    @apply text-[#0070A0];
+  }
+
+  &.variable {
+    @apply text-[#0070A0];
+  }
+
+  &.atrule {
+    @apply text-[#A04000];
+  }
+
+  &.attr-value {
+    @apply text-[#A04000];
+  }
+
+  &.function {
+    @apply text-[#A04000];
+  }
+
+  &.class-name {
+    @apply text-[#A04000];
+  }
+
+  &.keyword {
+    @apply text-[#905];
+  }
+
+  &.regex {
+    @apply text-[#A04000];
+  }
+
+  &.important {
+    @apply text-[#A04000];
+  }
+
+  &.important {
+    @apply font-bold;
+  }
+
+  &.bold {
+    @apply font-bold;
+  }
+
+  &.entity {
+    @apply cursor-help;
+  }
+}
+
+@utility comment {
+  /* Monokai Pro syntax highlighting - Dark mode */
+  .dark &.token {
+    @apply text-[#727072];
+  }
+
+  /* Light mode syntax highlighting */
+  &.token {
+    @apply text-[#666666];
+  }
+}
+
+@utility prolog {
+  .dark &.token {
+    @apply text-[#727072];
+  }
+  & .token {
+    @apply text-[#666666];
+  }
+}
+
+@utility doctype {
+  .dark &.token {
+    @apply text-[#727072];
+  }
+  & .token {
+    @apply text-[#666666];
+  }
+}
+
+@utility cdata {
+  .dark &.token {
+    @apply text-[#727072];
+  }
+  & .token {
+    @apply text-[#666666];
+  }
+}
+
+@utility operator {
+  .dark &.token {
+    @apply text-[#939293];
+  }
+
+  &.token {
+    @apply text-[#666666];
+  }
+}
+
+@utility punctuation {
+  .dark &.token {
+    @apply text-[#939293];
+  }
+
+  & .token {
+    @apply text-[#666666];
+  }
+}
+
+@utility property {
+  .dark &.token {
+    @apply text-[#FF6188];
+  }
+
+  &.token {
+    @apply text-[#905];
+  }
+}
+
+@utility tag {
+  .dark &.token {
+    @apply text-[#FF6188];
+  }
+
+  & .token {
+    @apply text-[#905];
+  }
+}
+
+@utility constant {
+  .dark &.token {
+    @apply text-[#FF6188];
+  }
+
+  & .token {
+    @apply text-[#905];
+  }
+}
+
+@utility symbol {
+  .dark &.token {
+    @apply text-[#FF6188];
+  }
+
+  & .token {
+    @apply text-[#905];
+  }
+}
+
+@utility deleted {
+  .dark &.token {
+    @apply text-[#FF6188];
+  }
+
+  & .token {
+    @apply text-[#905];
+  }
+}
+
+@utility boolean {
+  .dark &.token {
+    @apply text-[#AB9DF2];
+  }
+
+  &.token {
+    @apply text-[#6040A0];
+  }
+}
+
+@utility number {
+  .dark &.token {
+    @apply text-[#AB9DF2];
+  }
+
+  & .token {
+    @apply text-[#6040A0];
+  }
+}
+
+@utility selector {
+  .dark &.token {
+    @apply text-[#FFD866];
+  }
+
+  &.token {
+    @apply text-[#007000];
+  }
+}
+
+@utility attr-name {
+  .dark &.token {
+    @apply text-[#FFD866];
+  }
+
+  & .token {
+    @apply text-[#007000];
+  }
+}
+
+@utility string {
+  .dark &.token {
+    @apply text-[#FFD866];
+  }
+
+  .dark .language-css &.token {
+    @apply text-[#78DCE8];
+  }
+
+  .dark .style &.token {
+    @apply text-[#78DCE8];
+  }
+
+  & .token {
+    @apply text-[#007000];
+  }
+
+  .language-css &.token {
+    @apply text-[#0070A0];
+  }
+
+  .style &.token {
+    @apply text-[#0070A0];
+  }
+}
+
+@utility char {
+  .dark &.token {
+    @apply text-[#FFD866];
+  }
+
+  & .token {
+    @apply text-[#007000];
+  }
+}
+
+@utility builtin {
+  .dark &.token {
+    @apply text-[#FFD866];
+  }
+
+  & .token {
+    @apply text-[#007000];
+  }
+}
+
+@utility inserted {
+  .dark &.token {
+    @apply text-[#FFD866];
+  }
+
+  & .token {
+    @apply text-[#007000];
+  }
+}
+
+@utility entity {
+  .dark &.token {
+    @apply text-[#78DCE8];
+  }
+
+  &.token {
+    @apply text-[#0070A0];
+  }
+
+  &.token {
+    @apply cursor-help;
+  }
+}
+
+@utility url {
+  .dark &.token {
+    @apply text-[#78DCE8];
+  }
+
+  & .token {
+    @apply text-[#0070A0];
+  }
+}
+
+@utility language-css {
+  .dark & .token.string {
+    @apply text-[#78DCE8];
+  }
+
+  & .token.string {
+    @apply text-[#0070A0];
+  }
+}
+
+@utility style {
+  .dark & .token.string {
+    @apply text-[#78DCE8];
+  }
+
+  & .token.string {
+    @apply text-[#0070A0];
+  }
+}
+
+@utility variable {
+  .dark &.token {
+    @apply text-[#78DCE8];
+  }
+
+  & .token {
+    @apply text-[#0070A0];
+  }
+}
+
+@utility atrule {
+  .dark &.token {
+    @apply text-[#A9DC76];
+  }
+
+  &.token {
+    @apply text-[#A04000];
+  }
+}
+
+@utility attr-value {
+  .dark &.token {
+    @apply text-[#A9DC76];
+  }
+
+  & .token {
+    @apply text-[#A04000];
+  }
+}
+
+@utility function {
+  .dark &.token {
+    @apply text-[#A9DC76];
+  }
+
+  & .token {
+    @apply text-[#A04000];
+  }
+}
+
+@utility class-name {
+  .dark &.token {
+    @apply text-[#A9DC76];
+  }
+
+  & .token {
+    @apply text-[#A04000];
+  }
+}
+
+@utility keyword {
+  .dark &.token {
+    @apply text-[#FF6188];
+  }
+
+  &.token {
+    @apply text-[#905];
+  }
+}
+
+@utility regex {
+  .dark &.token {
+    @apply text-[#FFD866];
+  }
+
+  &.token {
+    @apply text-[#A04000];
+  }
+}
+
+@utility important {
+  .dark &.token {
+    @apply text-[#FFD866];
+  }
+
+  & .token {
+    @apply text-[#A04000];
+  }
+
+  &.token {
+    @apply font-bold;
+  }
+}
+
+@utility bold {
+  & .token {
+    @apply font-bold;
+  }
+}
 
 @layer base {
   /* Code block styling */
@@ -19,135 +828,6 @@
 
   pre code {
     @apply p-0;
-  }
-}
-
-@layer components {
-  /* Monokai Pro syntax highlighting - Dark mode */
-  .dark .token.comment,
-  .dark .token.prolog,
-  .dark .token.doctype,
-  .dark .token.cdata {
-    @apply text-[#727072];
-  }
-
-  .dark .token.operator,
-  .dark .token.punctuation {
-    @apply text-[#939293];
-  }
-
-  .dark .token.property,
-  .dark .token.tag,
-  .dark .token.constant,
-  .dark .token.symbol,
-  .dark .token.deleted {
-    @apply text-[#FF6188];
-  }
-
-  .dark .token.boolean,
-  .dark .token.number {
-    @apply text-[#AB9DF2];
-  }
-
-  .dark .token.selector,
-  .dark .token.attr-name,
-  .dark .token.string,
-  .dark .token.char,
-  .dark .token.builtin,
-  .dark .token.inserted {
-    @apply text-[#FFD866];
-  }
-
-  .dark .token.entity,
-  .dark .token.url,
-  .dark .language-css .token.string,
-  .dark .style .token.string,
-  .dark .token.variable {
-    @apply text-[#78DCE8];
-  }
-
-  .dark .token.atrule,
-  .dark .token.attr-value,
-  .dark .token.function,
-  .dark .token.class-name {
-    @apply text-[#A9DC76];
-  }
-
-  .dark .token.keyword {
-    @apply text-[#FF6188];
-  }
-
-  .dark .token.regex,
-  .dark .token.important {
-    @apply text-[#FFD866];
-  }
-
-  /* Light mode syntax highlighting */
-  .token.comment,
-  .token.prolog,
-  .token.doctype,
-  .token.cdata {
-    @apply text-[#666666];
-  }
-
-  .token.operator,
-  .token.punctuation {
-    @apply text-[#666666];
-  }
-
-  .token.property,
-  .token.tag,
-  .token.constant,
-  .token.symbol,
-  .token.deleted {
-    @apply text-[#905];
-  }
-
-  .token.boolean,
-  .token.number {
-    @apply text-[#6040A0];
-  }
-
-  .token.selector,
-  .token.attr-name,
-  .token.string,
-  .token.char,
-  .token.builtin,
-  .token.inserted {
-    @apply text-[#007000];
-  }
-
-  .token.entity,
-  .token.url,
-  .language-css .token.string,
-  .style .token.string,
-  .token.variable {
-    @apply text-[#0070A0];
-  }
-
-  .token.atrule,
-  .token.attr-value,
-  .token.function,
-  .token.class-name {
-    @apply text-[#A04000];
-  }
-
-  .token.keyword {
-    @apply text-[#905];
-  }
-
-  .token.regex,
-  .token.important {
-    @apply text-[#A04000];
-  }
-
-  .token.important,
-  .token.bold {
-    @apply font-bold;
-  }
-
-  .token.entity {
-    @apply cursor-help;
   }
 }
 
